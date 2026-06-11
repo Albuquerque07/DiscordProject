@@ -1,7 +1,7 @@
 'use server'
 
-import { db } from '@/db';
-import { usuario, servidor, canal, mensagem } from '@/db/schema';
+import { db } from './db';
+import { usuario, servidor, canal, mensagem } from './db/schema';
 import { eq, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 

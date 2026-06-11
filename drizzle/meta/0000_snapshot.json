@@ -1,0 +1,805 @@
+{
+  "id": "eefff8e9-df79-4551-ae9b-c464f086fbc4",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.bot": {
+      "name": "bot",
+      "schema": "",
+      "columns": {
+        "idbot": {
+          "name": "idbot",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nomebot": {
+          "name": "nomebot",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "funcaobot": {
+          "name": "funcaobot",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.canal": {
+      "name": "canal",
+      "schema": "",
+      "columns": {
+        "idcanal": {
+          "name": "idcanal",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nomecanal": {
+          "name": "nomecanal",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipocanal": {
+          "name": "tipocanal",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "canalepriv": {
+          "name": "canalepriv",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "idcategoria": {
+          "name": "idcategoria",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "canal_idcategoria_categoria_idcategoria_fk": {
+          "name": "canal_idcategoria_categoria_idcategoria_fk",
+          "tableFrom": "canal",
+          "tableTo": "categoria",
+          "columnsFrom": [
+            "idcategoria"
+          ],
+          "columnsTo": [
+            "idcategoria"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.cargo": {
+      "name": "cargo",
+      "schema": "",
+      "columns": {
+        "idcargo": {
+          "name": "idcargo",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nomecargo": {
+          "name": "nomecargo",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "corcargo": {
+          "name": "corcargo",
+          "type": "varchar(7)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'#99AAB5'"
+        },
+        "idserver": {
+          "name": "idserver",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "cargo_idserver_servidor_idserver_fk": {
+          "name": "cargo_idserver_servidor_idserver_fk",
+          "tableFrom": "cargo",
+          "tableTo": "servidor",
+          "columnsFrom": [
+            "idserver"
+          ],
+          "columnsTo": [
+            "idserver"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.categoria": {
+      "name": "categoria",
+      "schema": "",
+      "columns": {
+        "idcategoria": {
+          "name": "idcategoria",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nomecategoria": {
+          "name": "nomecategoria",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cateprivada": {
+          "name": "cateprivada",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "idserver": {
+          "name": "idserver",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "categoria_idserver_servidor_idserver_fk": {
+          "name": "categoria_idserver_servidor_idserver_fk",
+          "tableFrom": "categoria",
+          "tableTo": "servidor",
+          "columnsFrom": [
+            "idserver"
+          ],
+          "columnsTo": [
+            "idserver"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.contatodireto": {
+      "name": "contatodireto",
+      "schema": "",
+      "columns": {
+        "iduser_destinatario": {
+          "name": "iduser_destinatario",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "iduser_remetente": {
+          "name": "iduser_remetente",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "conteudocontato": {
+          "name": "conteudocontato",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "apelidocontato": {
+          "name": "apelidocontato",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "contatodireto_iduser_destinatario_usuario_iduser_fk": {
+          "name": "contatodireto_iduser_destinatario_usuario_iduser_fk",
+          "tableFrom": "contatodireto",
+          "tableTo": "usuario",
+          "columnsFrom": [
+            "iduser_destinatario"
+          ],
+          "columnsTo": [
+            "iduser"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "contatodireto_iduser_remetente_usuario_iduser_fk": {
+          "name": "contatodireto_iduser_remetente_usuario_iduser_fk",
+          "tableFrom": "contatodireto",
+          "tableTo": "usuario",
+          "columnsFrom": [
+            "iduser_remetente"
+          ],
+          "columnsTo": [
+            "iduser"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "contatodireto_iduser_destinatario_iduser_remetente_pk": {
+          "name": "contatodireto_iduser_destinatario_iduser_remetente_pk",
+          "columns": [
+            "iduser_destinatario",
+            "iduser_remetente"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.mensagem": {
+      "name": "mensagem",
+      "schema": "",
+      "columns": {
+        "idmsg": {
+          "name": "idmsg",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "conteudomsg": {
+          "name": "conteudomsg",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "horariomsg": {
+          "name": "horariomsg",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "idcanal": {
+          "name": "idcanal",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "iduser": {
+          "name": "iduser",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "mensagem_idcanal_canal_idcanal_fk": {
+          "name": "mensagem_idcanal_canal_idcanal_fk",
+          "tableFrom": "mensagem",
+          "tableTo": "canal",
+          "columnsFrom": [
+            "idcanal"
+          ],
+          "columnsTo": [
+            "idcanal"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "mensagem_iduser_usuario_iduser_fk": {
+          "name": "mensagem_iduser_usuario_iduser_fk",
+          "tableFrom": "mensagem",
+          "tableTo": "usuario",
+          "columnsFrom": [
+            "iduser"
+          ],
+          "columnsTo": [
+            "iduser"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.participa": {
+      "name": "participa",
+      "schema": "",
+      "columns": {
+        "idserver": {
+          "name": "idserver",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "iduser": {
+          "name": "iduser",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "participa_idserver_servidor_idserver_fk": {
+          "name": "participa_idserver_servidor_idserver_fk",
+          "tableFrom": "participa",
+          "tableTo": "servidor",
+          "columnsFrom": [
+            "idserver"
+          ],
+          "columnsTo": [
+            "idserver"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "participa_iduser_usuario_iduser_fk": {
+          "name": "participa_iduser_usuario_iduser_fk",
+          "tableFrom": "participa",
+          "tableTo": "usuario",
+          "columnsFrom": [
+            "iduser"
+          ],
+          "columnsTo": [
+            "iduser"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "participa_idserver_iduser_pk": {
+          "name": "participa_idserver_iduser_pk",
+          "columns": [
+            "idserver",
+            "iduser"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.permissao": {
+      "name": "permissao",
+      "schema": "",
+      "columns": {
+        "idpermissao": {
+          "name": "idpermissao",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nomepermissao": {
+          "name": "nomepermissao",
+          "type": "varchar(60)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipopermissao": {
+          "name": "tipopermissao",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.possuibot": {
+      "name": "possuibot",
+      "schema": "",
+      "columns": {
+        "idbot": {
+          "name": "idbot",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "idserver": {
+          "name": "idserver",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "possuibot_idbot_bot_idbot_fk": {
+          "name": "possuibot_idbot_bot_idbot_fk",
+          "tableFrom": "possuibot",
+          "tableTo": "bot",
+          "columnsFrom": [
+            "idbot"
+          ],
+          "columnsTo": [
+            "idbot"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "possuibot_idserver_servidor_idserver_fk": {
+          "name": "possuibot_idserver_servidor_idserver_fk",
+          "tableFrom": "possuibot",
+          "tableTo": "servidor",
+          "columnsFrom": [
+            "idserver"
+          ],
+          "columnsTo": [
+            "idserver"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "possuibot_idbot_idserver_pk": {
+          "name": "possuibot_idbot_idserver_pk",
+          "columns": [
+            "idbot",
+            "idserver"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.possuiperm": {
+      "name": "possuiperm",
+      "schema": "",
+      "columns": {
+        "idcargo": {
+          "name": "idcargo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "idpermissao": {
+          "name": "idpermissao",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "possuiperm_idcargo_cargo_idcargo_fk": {
+          "name": "possuiperm_idcargo_cargo_idcargo_fk",
+          "tableFrom": "possuiperm",
+          "tableTo": "cargo",
+          "columnsFrom": [
+            "idcargo"
+          ],
+          "columnsTo": [
+            "idcargo"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "possuiperm_idpermissao_permissao_idpermissao_fk": {
+          "name": "possuiperm_idpermissao_permissao_idpermissao_fk",
+          "tableFrom": "possuiperm",
+          "tableTo": "permissao",
+          "columnsFrom": [
+            "idpermissao"
+          ],
+          "columnsTo": [
+            "idpermissao"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "possuiperm_idcargo_idpermissao_pk": {
+          "name": "possuiperm_idcargo_idpermissao_pk",
+          "columns": [
+            "idcargo",
+            "idpermissao"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.qualifica": {
+      "name": "qualifica",
+      "schema": "",
+      "columns": {
+        "idcargo": {
+          "name": "idcargo",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "iduser": {
+          "name": "iduser",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "qualifica_idcargo_cargo_idcargo_fk": {
+          "name": "qualifica_idcargo_cargo_idcargo_fk",
+          "tableFrom": "qualifica",
+          "tableTo": "cargo",
+          "columnsFrom": [
+            "idcargo"
+          ],
+          "columnsTo": [
+            "idcargo"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "qualifica_iduser_usuario_iduser_fk": {
+          "name": "qualifica_iduser_usuario_iduser_fk",
+          "tableFrom": "qualifica",
+          "tableTo": "usuario",
+          "columnsFrom": [
+            "iduser"
+          ],
+          "columnsTo": [
+            "iduser"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "qualifica_idcargo_iduser_pk": {
+          "name": "qualifica_idcargo_iduser_pk",
+          "columns": [
+            "idcargo",
+            "iduser"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.servidor": {
+      "name": "servidor",
+      "schema": "",
+      "columns": {
+        "idserver": {
+          "name": "idserver",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nomeserver": {
+          "name": "nomeserver",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "datainicioserver": {
+          "name": "datainicioserver",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "nivelimpulso": {
+          "name": "nivelimpulso",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.usuario": {
+      "name": "usuario",
+      "schema": "",
+      "columns": {
+        "iduser": {
+          "name": "iduser",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "apelidouser": {
+          "name": "apelidouser",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "emailuser": {
+          "name": "emailuser",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "senhauser": {
+          "name": "senhauser",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "datainiciouser": {
+          "name": "datainiciouser",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "statususer": {
+          "name": "statususer",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'online'"
+        },
+        "temnitro": {
+          "name": "temnitro",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "usuario_emailuser_unique": {
+          "name": "usuario_emailuser_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "emailuser"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.viraamigode": {
+      "name": "viraamigode",
+      "schema": "",
+      "columns": {
+        "iduser_solicitante": {
+          "name": "iduser_solicitante",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "iduser_receptor": {
+          "name": "iduser_receptor",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "datainicio": {
+          "name": "datainicio",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pendente'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "viraamigode_iduser_solicitante_usuario_iduser_fk": {
+          "name": "viraamigode_iduser_solicitante_usuario_iduser_fk",
+          "tableFrom": "viraamigode",
+          "tableTo": "usuario",
+          "columnsFrom": [
+            "iduser_solicitante"
+          ],
+          "columnsTo": [
+            "iduser"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "viraamigode_iduser_receptor_usuario_iduser_fk": {
+          "name": "viraamigode_iduser_receptor_usuario_iduser_fk",
+          "tableFrom": "viraamigode",
+          "tableTo": "usuario",
+          "columnsFrom": [
+            "iduser_receptor"
+          ],
+          "columnsTo": [
+            "iduser"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "viraamigode_iduser_solicitante_iduser_receptor_pk": {
+          "name": "viraamigode_iduser_solicitante_iduser_receptor_pk",
+          "columns": [
+            "iduser_solicitante",
+            "iduser_receptor"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
