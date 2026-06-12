@@ -1,8 +1,8 @@
 'use server'
 
 import { db } from './db';
-import { usuario, servidor, canal, mensagem } from './db/schema';
-import { eq, desc } from 'drizzle-orm';
+import { usuario, servidor, canal, mensagem, categoria, participa } from './db/schema';
+import { eq, desc, and, isNull } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 // ==========================================
@@ -72,6 +72,16 @@ export async function deleteServidor(id: number) {
   revalidatePath('/servidores');
 }
 
+export async function deleteCategoria(id: number) {
+  await db.delete(categoria).where(eq(categoria.idCategoria, id));
+  revalidatePath('/servidores');
+}
+
+export async function deleteCanal(id: number) {
+  await db.delete(canal).where(eq(canal.idCanal, id));
+  revalidatePath('/servidores');
+}
+
 // ==========================================
 // CRUD: CANAIS
 // ==========================================
@@ -93,12 +103,94 @@ export async function addCanal(formData: FormData) {
     canalEPriv: isPrivado
   });
   
-  revalidatePath('/canais');
+  revalidatePath('/servidores');
+}
+
+export async function addCategoria(formData: FormData) {
+  const nome = formData.get('nome') as string;
+  const idServer = parseInt(formData.get('idServer') as string);
+
+  await db.insert(categoria).values({
+    nomeCategoria: nome,
+    idServer: idServer,
+  });
+
+  revalidatePath('/servidores');
+}
+
+export async function getCategoriaPorServidor(idServer: number) {
+  return await db.select({
+    idCategoria: categoria.idCategoria,
+    nomeCategoria: categoria.nomeCategoria,
+  })
+  .from(categoria)
+  .where(eq(categoria.idServer, idServer));
+}
+
+export async function getUsuariosPorServidor(idServer: number) {
+  return await db.select({
+    idUser: usuario.idUser,
+    apelidoUser: usuario.apelidoUser,
+  })
+  .from(usuario)
+  .innerJoin(participa, eq(usuario.idUser, participa.idUser))
+  .where(eq(participa.idServer, idServer));
+}
+
+export async function getUsuariosForaDoServidor(idServer: number) {
+  return await db.select({
+    idUser: usuario.idUser,
+    apelidoUser: usuario.apelidoUser,
+  })
+  .from(usuario)
+  .leftJoin(
+    participa,
+    and(eq(participa.idUser, usuario.idUser), eq(participa.idServer, idServer))
+  )
+  .where(isNull(participa.idServer));
+}
+
+export async function addParticipa(formData: FormData) {
+  const idServer = parseInt(formData.get('idServer') as string);
+  const idUser = parseInt(formData.get('idUser') as string);
+
+  try {
+    await db.insert(participa).values({ idServer, idUser });
+  } catch {
+    // Usuário já participa do servidor (violação de PK composta)
+    return;
+  }
+
+  revalidatePath('/servidores');
+}
+
+export async function getCanaisPorServidor(idServer: number) {
+  return await db.select({
+    idCanal: canal.idCanal,
+    nomeCanal: canal.nomeCanal,
+    tipoCanal: canal.tipoCanal,
+  })
+  .from(canal)
+  .innerJoin(categoria, eq(canal.idCategoria, categoria.idCategoria))
+  .where(eq(categoria.idServer, idServer));
 }
 
 // ==========================================
 // CRUD: MENSAGENS
 // ==========================================
+
+export async function getMensagensComUsuario(idCanal: number) {
+  return await db.select({
+    idMsg: mensagem.idMsg,
+    conteudoMsg: mensagem.conteudoMsg,
+    horarioMsg: mensagem.horarioMsg,
+    apelidoUser: usuario.apelidoUser,
+  })
+  .from(mensagem)
+  .innerJoin(usuario, eq(mensagem.idUser, usuario.idUser))
+  .where(eq(mensagem.idCanal, idCanal))
+  .orderBy(desc(mensagem.horarioMsg));
+}
 
 // Retorna mensagens de um canal específico
 export async function getMensagensPorCanal(idCanal: number) {
@@ -119,10 +211,10 @@ export async function addMensagem(formData: FormData) {
     idUser: idUser,
   });
   
-  revalidatePath(`/canal/${idCanal}`); // Revalida a página específica do canal
+  revalidatePath('/servidores');
 }
 
 export async function deleteMensagem(id: number) {
   await db.delete(mensagem).where(eq(mensagem.idMsg, id));
-  revalidatePath('/'); 
+  revalidatePath('/servidores');
 }
