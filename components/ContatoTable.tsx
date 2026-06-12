@@ -21,7 +21,7 @@ export default function ContatoTable({ contatos, usuarios }: { contatos: Contato
         </thead>
         <tbody>
           {contatos.map((c) => (
-            <tr key={c.idContato} className="border-b">
+            <tr key={`${c.idUserDestinatario}-${c.idUserRemetente}`} className="border-b">
               <td className="p-3">{nomeUsuario(c.idUserRemetente)}</td>
               <td className="p-3">{nomeUsuario(c.idUserDestinatario)}</td>
               <td className="p-3">{c.conteudoContato}</td>
@@ -29,7 +29,7 @@ export default function ContatoTable({ contatos, usuarios }: { contatos: Contato
               <td className="p-3">
                 <form action={async () => {
                   'use server';
-                  await deleteContato(c.idContato);
+                  await deleteContato(c.idUserDestinatario, c.idUserRemetente);
                 }}>
                   <button className="text-red-600 font-bold hover:underline">Excluir</button>
                 </form>

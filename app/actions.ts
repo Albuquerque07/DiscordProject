@@ -225,7 +225,7 @@ export async function deleteMensagem(id: number) {
 // ==========================================
 
 export async function getContatos() {
-  return await db.select().from(contatoDireto).orderBy(desc(contatoDireto.idContato));
+  return await db.select().from(contatoDireto);
 }
 
 export async function addContato(formData: FormData) {
@@ -244,7 +244,12 @@ export async function addContato(formData: FormData) {
   revalidatePath('/mensagens')
 }
 
-export async function deleteContato(id: number) {
-  await db.delete(contatoDireto).where(eq(contatoDireto.idContato, id));
+export async function deleteContato(idDestinatario: number, idRemetente: number) {
+  await db.delete(contatoDireto).where(
+    and(
+      eq(contatoDireto.idUserDestinatario, idDestinatario),
+      eq(contatoDireto.idUserRemetente, idRemetente)
+    )
+  );
   revalidatePath('/mensagens');
 }
