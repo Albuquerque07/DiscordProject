@@ -1,9 +1,10 @@
 'use server'
 
 import { db } from './db';
-import { usuario, servidor, canal, mensagem, categoria, participa } from './db/schema';
+import { usuario, servidor, canal, mensagem, contatoDireto, categoria, participa } from './db/schema';
 import { eq, desc, and, isNull } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+
 
 // ==========================================
 // CRUD: USUÁRIOS
@@ -217,4 +218,33 @@ export async function addMensagem(formData: FormData) {
 export async function deleteMensagem(id: number) {
   await db.delete(mensagem).where(eq(mensagem.idMsg, id));
   revalidatePath('/servidores');
+}
+
+// ==========================================
+// CRUD: MENSAGENS DIRETAS
+// ==========================================
+
+export async function getContatos() {
+  return await db.select().from(contatoDireto).orderBy(desc(contatoDireto.idContato));
+}
+
+export async function addContato(formData: FormData) {
+  const remetente = parseInt(formData.get('remetente') as string);
+  const destinatario = parseInt(formData.get('destinatario') as string);
+  const apelido = formData.get('apelido') as string;
+  const conteudo = formData.get('conteudo') as string;
+
+  await db.insert(contatoDireto).values({
+    idUserRemetente: remetente,
+    idUserDestinatario: destinatario,
+    apelidoContato: apelido,
+    conteudoContato: conteudo,
+  });
+
+  revalidatePath('/mensagens')
+}
+
+export async function deleteContato(id: number) {
+  await db.delete(contatoDireto).where(eq(contatoDireto.idContato, id));
+  revalidatePath('/mensagens');
 }

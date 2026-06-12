@@ -55,15 +55,14 @@ export const mensagem = pgTable('mensagem', {
   idUser: integer('iduser').notNull().references(() => usuario.idUser, { onDelete: 'cascade' }),
 });
 
-// CONTATODIRETO (PK Composta)
+// CONTATODIRETO
 export const contatoDireto = pgTable('contatodireto', {
+  idContato: serial('idcontato').primaryKey(),
   idUserDestinatario: integer('iduser_destinatario').notNull().references(() => usuario.idUser, { onDelete: 'cascade' }),
   idUserRemetente: integer('iduser_remetente').notNull().references(() => usuario.idUser, { onDelete: 'cascade' }),
   conteudoContato: text('conteudocontato').notNull(),
   apelidoContato: varchar('apelidocontato', { length: 50 }),
-}, (table) => ({
-  pk: primaryKey({ columns: [table.idUserDestinatario, table.idUserRemetente] })
-}));
+});
 
 // VIRAAMIGODE (PK Composta)
 export const viraAmigoDe = pgTable('viraamigode', {
